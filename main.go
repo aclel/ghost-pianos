@@ -55,27 +55,33 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+
+		note := uint8(60)
 		time.Sleep(time.Nanosecond)
-		wr.NoteOff(60)
+		wr.NoteOff(note)
 		time.Sleep(time.Nanosecond)
-		wr.NoteOn(60, 100)
+		wr.NoteOn(note, 100)
 		time.Sleep(time.Second * 1)
-		wr.NoteOff(60)
+		wr.NoteOff(note)
 		time.Sleep(time.Nanosecond)
 
-		wr.NoteOn(75, 100)
-		time.Sleep(time.Second * 1)
-		wr.NoteOff(75)
-		time.Sleep(time.Nanosecond)
+		if (note == 60) {
+			fmt.Println("Reacting to note 60 - playing note 75")
+			wr.NoteOn(75, 100)
+			time.Sleep(time.Second * 1)
+			wr.NoteOff(75)
+			time.Sleep(time.Nanosecond)
+		}
+		
 
-		wr.NoteOn(70, 100)
-		time.Sleep(time.Nanosecond)
-		wr.NoteOff(70)
-		time.Sleep(time.Second * 1)
-		wr.NoteOn(60, 100)
-		time.Sleep(time.Nanosecond)
-		wr.NoteOff(60)
-		time.Sleep(time.Nanosecond)
+		// wr.NoteOn(70, 100)
+		// time.Sleep(time.Nanosecond)
+		// wr.NoteOff(70)
+		// time.Sleep(time.Second * 1)
+		// wr.NoteOn(60, 100)
+		// time.Sleep(time.Nanosecond)
+		// wr.NoteOff(60)
+		// time.Sleep(time.Nanosecond)
 	}
 }
 
