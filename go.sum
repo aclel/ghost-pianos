@@ -1,0 +1,13 @@
+github.com/gomidi/cc v0.2.0 h1:2IRNKQvLFl1nq974v0psFYBBzn95ZceNeKxK2eByFc8=
+github.com/gomidi/cc v0.2.0/go.mod h1:pp/v4mQ8/Z6O7KoGukAO9MNQ5nhUUgAJlJU7XsC4IpI=
+github.com/gomidi/connect v0.10.0/go.mod h1:zu6PoN7Xs/37thtXZ+4Wl1MMg8MxenS7U/M3rn6trNo=
+github.com/gomidi/connect v0.11.1 h1:3u5nXHSUDCj1CkhiY3hes+QzTg//gSD3gUVA5eTythU=
+github.com/gomidi/connect v0.11.1/go.mod h1:zu6PoN7Xs/37thtXZ+4Wl1MMg8MxenS7U/M3rn6trNo=
+github.com/gomidi/mid v0.17.0 h1:gVc21J4lTqIqdI61ZHtvbrflH0Tf9jmCyqfAwcEacJs=
+github.com/gomidi/mid v0.17.0/go.mod h1:CRgJg/zXQWthyz6SOjuTK4E089G1QNcd9pARxQXAAeQ=
+github.com/gomidi/midi v1.6.0 h1:g/aUVDRfFKzCIvmlI2MRc6IKopKdBno2bBb/2a4RYmo=
+github.com/gomidi/midi v1.6.0/go.mod h1:B16DbgtsXSbQK9Q75aVezVL6VGhaK+2CVe/ybwUUCHE=
+github.com/gomidi/rtmididrv v0.0.7 h1:rwu5vBc68ghMk7GtWZpGW8FDa7ks0nTavKa2+l2Xod0=
+github.com/gomidi/rtmididrv v0.0.7/go.mod h1:TVmg5SOm3vBR7/+rRx2dISXymrrBzzlabOj1H1wXCi0=
+github.com/gomidi/rtmididrv/imported/rtmidi v0.0.0-20180903192224-c212a44b13e6 h1:MX4HXETmAJVVNL3Id1jC3ZfORhLB1RXHORosTEAY32Y=
+github.com/gomidi/rtmididrv/imported/rtmidi v0.0.0-20180903192224-c212a44b13e6/go.mod h1:dbXfsHh+fNtafItiJIgnK6EMw5M/xgtXc7Rmya+cZsQ=
