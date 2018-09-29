@@ -56,22 +56,23 @@ func main() {
 			panic(err)
 		}
 
+		// Start playing a note
 		note := uint8(60)
-		time.Sleep(time.Nanosecond)
-		wr.NoteOff(note)
-		time.Sleep(time.Nanosecond)
 		wr.NoteOn(note, 100)
 		time.Sleep(time.Second * 1)
+
+		// Start playing a harmony
+		harmony := note - 2
+		fmt.Println("Reacting to note 60 - playing note 58")
+		wr.NoteOn(harmony, 100)
+		time.Sleep(time.Second * 1)
+
+		// Stop note then harmony note
 		wr.NoteOff(note)
 		time.Sleep(time.Nanosecond)
+		wr.NoteOff(harmony)
+		time.Sleep(time.Nanosecond)
 
-		if (note == 60) {
-			fmt.Println("Reacting to note 60 - playing note 75")
-			wr.NoteOn(75, 100)
-			time.Sleep(time.Second * 1)
-			wr.NoteOff(75)
-			time.Sleep(time.Nanosecond)
-		}
 		
 
 		// wr.NoteOn(70, 100)
