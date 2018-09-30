@@ -73,7 +73,6 @@ func main() {
 		wr.NoteOff(harmony)
 		time.Sleep(time.Nanosecond)
 
-		
 
 		// wr.NoteOn(70, 100)
 		// time.Sleep(time.Nanosecond)
