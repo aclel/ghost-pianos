@@ -7,6 +7,7 @@ import (
 
     "github.com/gomidi/connect"
     "github.com/gomidi/mid"
+    "github.com/aclel/ghost-pianos/bjorklund"
     driver "github.com/gomidi/rtmididrv"
 )
 
@@ -51,37 +52,22 @@ func main() {
     { // write MIDI to out that passes it to in on which we listen.
         wr.SetChannel(1)
 
-        err := wr.NoteOn(60, 100)
-        if err != nil {
-            panic(err)
+        rhythm := bjorklund.Bjorklund(13, 5)
+        playRhythm(wr, 70, rhythm)
+    }
+}
+
+func playRhythm(wr *mid.Writer, note uint8, rhythm []int) {
+    for i := 0; i < len(rhythm); i++ {
+        pulse := rhythm[i]
+
+        if pulse == 1 {
+            wr.NoteOn(note, 100)
+            time.Sleep(time.Second / 2)
+            wr.NoteOff(note)
+        } else {
+            time.Sleep(time.Second / 2)
         }
-
-        // Start playing a note
-        note := uint8(60)
-        wr.NoteOn(note, 100)
-        time.Sleep(time.Second * 1)
-
-        // Start playing a harmony
-        harmony := note - 2
-        fmt.Println("Reacting to note 60 - playing note 58")
-        wr.NoteOn(harmony, 100)
-        time.Sleep(time.Second * 1)
-
-        // Stop note then harmony note
-        wr.NoteOff(note)
-        time.Sleep(time.Nanosecond)
-        wr.NoteOff(harmony)
-        time.Sleep(time.Nanosecond)
-
-
-        // wr.NoteOn(70, 100)
-        // time.Sleep(time.Nanosecond)
-        // wr.NoteOff(70)
-        // time.Sleep(time.Second * 1)
-        // wr.NoteOn(60, 100)
-        // time.Sleep(time.Nanosecond)
-        // wr.NoteOff(60)
-        // time.Sleep(time.Nanosecond)
     }
 }
 
