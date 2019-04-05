@@ -33,6 +33,7 @@ func main() {
     outs, err := drv.Outs()
     must(err)
 
+    // ./ghost-pianos list
     if len(os.Args) == 2 && os.Args[1] == "list" {
         printInPorts(ins)
         printOutPorts(outs)
