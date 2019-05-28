@@ -2,12 +2,10 @@
 
 ## Prerequisites
 
-* Virtual midi input - vmpk
-* Virtual midi input - vmpk or fluidsynth
+* vmpk for midi input and output
 
 ## Getting started
 
-1. Run midi input
-2. Run midi output
-3. Run ghost-pianos
+1. Run vmpk - ensure that MIDI Input is set to CoreAudio
+2. Run ghost-pianos
 
