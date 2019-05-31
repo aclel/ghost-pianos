@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
 
 	"github.com/aclel/ghost-pianos/bjorklund"
 	"github.com/gomidi/connect"
 	"github.com/gomidi/mid"
+
 	driver "github.com/gomidi/rtmididrv"
 )
 
@@ -40,22 +42,34 @@ func main() {
 		return
 	}
 
-	in, out := ins[0], outs[1]
+	in, out := ins[0], outs[0]
 
 	must(in.Open())
 	must(out.Open())
 
 	wr := mid.WriteTo(out)
+
+	// rd.Msg.Each = func() to hook into each message
 	rd := mid.NewReader()
+	rd.Msg.Channel.NoteOn = func(p *mid.Position, channel, key, vel uint8) {
+		if key == 70 {
+			minNote := 70
+			maxNote := 90
+			rhythm := bjorklund.Bjorklund(30, 18)
+
+			randSource := rand.NewSource(time.Now().UnixNano())
+			rand.New(randSource)
+			nextKey := uint8(rand.Intn(maxNote-minNote) + minNote)
+			go playRhythm(wr, nextKey, rhythm)
+		}
+	}
 
 	// listen for MIDI
 	go rd.ReadFrom(in)
 	{
-		//write MIDI to out that passes it to in on which we listen.
-		wr.SetChannel(1)
+		for {
 
-		rhythm := bjorklund.Bjorklund(13, 5)
-		playRhythm(wr, 70, rhythm)
+		}
 	}
 }
 
