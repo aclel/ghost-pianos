@@ -91,6 +91,4 @@ var Rhythms = map[uint8][]int{
 	86: bjorklund.Bjorklund(3, 2),
 	87: bjorklund.Bjorklund(9, 7),
 	88: bjorklund.Bjorklund(11, 9),
-	89: bjorklund.Bjorklund(12, 4),
-	90: bjorklund.Bjorklund(19, 12),
 }
