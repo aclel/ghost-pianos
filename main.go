@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
 
@@ -55,10 +56,23 @@ func main() {
 
 		// minNote := 70
 		// maxNote := 90
-		// randSource := rand.NewSource(time.Now().UnixNano())
-		// rand.New(randSource)
+		randSource := rand.NewSource(time.Now().UnixNano())
+		rand.New(randSource)
+
+		operators := []int{1, -1}
+		operator := operators[rand.Intn(len(operators))]
+
+		newKey := int(key) + (operator * 7)
+		if newKey > 88 {
+			newKey = 88
+		} else if newKey < 1 {
+			newKey = 1
+		}
+
+		fmt.Printf("[%v] %v\n", key, newKey)
+
 		// nextKey := uint8(rand.Intn(maxNote-minNote) + minNote)
-		go playRhythm(wr, key, rhythm)
+		go playRhythm(wr, uint8(newKey), rhythm)
 	}
 
 	// listen for MIDI
