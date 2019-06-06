@@ -1,99 +1,83 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"math/rand"
-	"os"
-	"time"
 
 	"github.com/gomidi/connect"
 	"github.com/gomidi/mid"
-
 	driver "github.com/gomidi/rtmididrv"
 )
 
-func must(err error) {
+func main() {
+	drv, err := driver.New()
 	if err != nil {
 		panic(err.Error())
 	}
-}
-
-// This example expects the first input and output port to be connected
-// somehow (are either virtual MIDI through ports or physically connected).
-// We write to the out port and listen to the in port.
-func main() {
-	drv, err := driver.New()
-	must(err)
-
-	// make sure to close all open ports at the end
 	defer drv.Close()
 
 	ins, err := drv.Ins()
-	must(err)
+	if err != nil {
+		panic(err.Error())
+	}
 
 	outs, err := drv.Outs()
-	must(err)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	// ./ghost-pianos list
-	if len(os.Args) == 2 && os.Args[1] == "list" {
+	if len(ins) < 1 {
+		panic("There are no MIDI input ports available")
+	}
+
+	if len(outs) < 1 {
+		panic("There are no MIDI output ports available")
+	}
+
+	inputPortPtr := flag.Int("in", 0, "MIDI input port")
+	outputPortPtr := flag.Int("out", 0, "MIDI output port")
+	listPtr := flag.Bool("list", false, "List all of the available input and output MIDI ports")
+	flag.Parse()
+
+	if *listPtr {
 		printInPorts(ins)
 		printOutPorts(outs)
 		return
 	}
 
-	in, out := ins[0], outs[1]
-
-	must(in.Open())
-	must(out.Open())
-
-	wr := mid.WriteTo(out)
-
-	// rd.Msg.Each = func() to hook into each message
-	rd := mid.NewReader()
-	rd.Msg.Channel.NoteOn = func(p *mid.Position, channel, key, vel uint8) {
-
-		rhythm := Rhythms[key]
-
-		// minNote := 70
-		// maxNote := 90
-		randSource := rand.NewSource(time.Now().UnixNano())
-		rand.New(randSource)
-
-		operators := []int{1, -1}
-		operator := operators[rand.Intn(len(operators))]
-
-		newKey := int(key) + (operator * 7)
-		if newKey > 88 {
-			newKey = 88
-		} else if newKey < 1 {
-			newKey = 1
-		}
-
-		fmt.Printf("[%v] %v\n", key, newKey)
-
-		// nextKey := uint8(rand.Intn(maxNote-minNote) + minNote)
-		go playRhythm(wr, uint8(newKey), rhythm)
+	selectedIn := *inputPortPtr
+	if selectedIn > len(ins)-1 || selectedIn < 0 {
+		panic("Selected input port: %v is out of range")
 	}
 
-	// listen for MIDI
-	go rd.ReadFrom(in)
+	selectedOut := *outputPortPtr
+	if selectedOut > len(outs)-1 || selectedOut < 0 {
+		panic("Selected input port: %v is out of range")
+	}
+
+	in, out := ins[selectedIn], outs[selectedOut]
+
+	err = in.Open()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	err = out.Open()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	writer := mid.WriteTo(out)
+	noteGenerator := NoteGenerator{Writer: writer, TimeDivisor: 5}
+
+	reader := mid.NewReader()
+	reader.Msg.Channel.NoteOn = noteGenerator.RespondToKey
+
+	// Indefinitely listen and respond MIDI inputs using the note generator
+	go reader.ReadFrom(in)
 	{
 		for {
 
-		}
-	}
-}
-
-func playRhythm(wr *mid.Writer, note uint8, rhythm []int) {
-	for i := 0; i < len(rhythm); i++ {
-		pulse := rhythm[i]
-
-		if pulse == 1 {
-			wr.NoteOn(note, 100)
-			time.Sleep(time.Second / 2)
-			wr.NoteOff(note)
-		} else {
-			time.Sleep(time.Second / 2)
 		}
 	}
 }
