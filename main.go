@@ -36,6 +36,7 @@ func main() {
 
 	inputPortPtr := flag.Int("in", 0, "MIDI input port")
 	outputPortPtr := flag.Int("out", 0, "MIDI output port")
+	bpmPtr := flag.Int("bpm", 120, "Beats per minute of the generated rhythms")
 	listPtr := flag.Bool("list", false, "List all of the available input and output MIDI ports")
 	flag.Parse()
 
@@ -68,7 +69,7 @@ func main() {
 	}
 
 	writer := mid.WriteTo(out)
-	noteGenerator := NoteGenerator{Writer: writer, TimeDivisor: 5}
+	noteGenerator := NoteGenerator{Writer: writer, BPM: *bpmPtr}
 
 	reader := mid.NewReader()
 	reader.Msg.Channel.NoteOn = noteGenerator.RespondToKey

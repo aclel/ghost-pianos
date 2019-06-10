@@ -15,13 +15,14 @@ type NoteGeneratorInterface interface {
 }
 
 type NoteGenerator struct {
-	Writer      *mid.Writer
-	TimeDivisor time.Duration
+	Writer *mid.Writer
+	BPM    int
 }
 
 func (noteGenerator NoteGenerator) RespondToKey(p *mid.Position, channel, key, velocity uint8) {
 	rhythm := Rhythms[key]
-	fmt.Printf("[%v]\n", key)
+	sleepDuration := convertBPMToMilliSeconds(noteGenerator.BPM)
+	fmt.Printf("[%v] %v\n", key, sleepDuration)
 	go noteGenerator.PlayRhythm(key, rhythm, velocity)
 }
 
@@ -46,15 +47,21 @@ func (noteGenerator NoteGenerator) RespondToKeyPlusSevenRando(p *mid.Position, c
 }
 
 func (noteGenerator NoteGenerator) PlayRhythm(note uint8, rhythm []int, velocity uint8) {
+	sleepDuration := convertBPMToMilliSeconds(noteGenerator.BPM)
 	for i := 0; i < len(rhythm); i++ {
 		pulse := rhythm[i]
 
 		if pulse == 1 {
 			noteGenerator.Writer.NoteOn(note, velocity)
-			time.Sleep(time.Second / noteGenerator.TimeDivisor)
+			time.Sleep(sleepDuration)
 			noteGenerator.Writer.NoteOff(note)
 		} else {
-			time.Sleep(time.Second / 5)
+			time.Sleep(sleepDuration)
 		}
 	}
+}
+
+func convertBPMToMilliSeconds(bpm int) time.Duration {
+	milliSeconds := 60000 / bpm
+	return time.Duration(milliSeconds) * time.Millisecond
 }
