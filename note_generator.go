@@ -46,12 +46,43 @@ func (noteGenerator NoteGenerator) RespondToKeyPlusSevenRando(p *mid.Position, c
 	go noteGenerator.PlayRhythm(uint8(newKey), rhythm, velocity)
 }
 
+func (noteGenerator NoteGenerator) PlayDefinedSequence(p *mid.Position, channel, key, velocity uint8) {
+	fmt.Printf("[%v]\n", key)
+	go noteGenerator.PlayNoteSequence(key, 50)
+}
+
 func (noteGenerator NoteGenerator) PlayRhythm(note uint8, rhythm []int, velocity uint8) {
 	sleepDuration := convertBPMToMilliSeconds(noteGenerator.BPM)
 	for i := 0; i < len(rhythm); i++ {
 		pulse := rhythm[i]
 
 		if pulse == 1 {
+			noteGenerator.Writer.NoteOn(note, velocity)
+			time.Sleep(sleepDuration)
+			noteGenerator.Writer.NoteOff(note)
+		} else {
+			time.Sleep(sleepDuration)
+		}
+	}
+}
+
+func (noteGenerator NoteGenerator) PlayNoteSequence(key uint8, velocity uint8) {
+	sleepDuration := convertBPMToMilliSeconds(noteGenerator.BPM)
+
+	keyInt := int(key)
+	if keyInt > len(Sequences)-1 {
+		time.Sleep(sleepDuration)
+	}
+	notes := Sequences[keyInt]
+
+	for i := 0; i < len(notes); i++ {
+		note := notes[i]
+		if i%2 == 0 || i%3 == 0 {
+			velocity = 100
+		} else {
+			velocity = 70
+		}
+		if note > 0 {
 			noteGenerator.Writer.NoteOn(note, velocity)
 			time.Sleep(sleepDuration)
 			noteGenerator.Writer.NoteOff(note)

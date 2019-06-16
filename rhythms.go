@@ -71,7 +71,7 @@ var Rhythms = map[uint8][]int{
 	66: bjorklund.Bjorklund(9, 7),
 	67: bjorklund.Bjorklund(11, 9),
 	68: bjorklund.Bjorklund(12, 4),
-	69: bjorklund.Bjorklund(19, 12),
+	69: []int{1, 0, 0, 1, 0, 0, 1},
 	70: bjorklund.Bjorklund(5, 2),
 	71: bjorklund.Bjorklund(7, 3),
 	72: bjorklund.Bjorklund(9, 4),
