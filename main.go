@@ -54,6 +54,7 @@ func main() {
 	outputPortPtr := flag.Int("out", 0, "MIDI output port")
 	bpmPtr := flag.Int("bpm", 120, "Beats per minute of the generated rhythms")
 	velocityMultiplierPtr := flag.Float64("vel", 1, "Multiplier for output velocity")
+	rhythmsPathPtr := flag.String("rhythms", "rhythms.yaml", "Relative path to a rhythms yaml file")
 	listPtr := flag.Bool("list", false, "List all of the available input and output MIDI ports")
 	flag.Parse()
 
@@ -85,7 +86,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	filename, _ := filepath.Abs("./rhythms.yaml")
+	filename, _ := filepath.Abs(*rhythmsPathPtr)
 	yamlFile, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
