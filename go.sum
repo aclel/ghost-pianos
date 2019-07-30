@@ -11,3 +11,6 @@ github.com/gomidi/rtmididrv v0.0.7 h1:rwu5vBc68ghMk7GtWZpGW8FDa7ks0nTavKa2+l2Xod
 github.com/gomidi/rtmididrv v0.0.7/go.mod h1:TVmg5SOm3vBR7/+rRx2dISXymrrBzzlabOj1H1wXCi0=
 github.com/gomidi/rtmididrv/imported/rtmidi v0.0.0-20180903192224-c212a44b13e6 h1:MX4HXETmAJVVNL3Id1jC3ZfORhLB1RXHORosTEAY32Y=
 github.com/gomidi/rtmididrv/imported/rtmidi v0.0.0-20180903192224-c212a44b13e6/go.mod h1:dbXfsHh+fNtafItiJIgnK6EMw5M/xgtXc7Rmya+cZsQ=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
+gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=

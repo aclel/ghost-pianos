@@ -1,7 +1,5 @@
 package bjorklund
 
-import "fmt"
-
 func Bjorklund(steps int, pulses int) []int {
     if (pulses > steps) {
         panic("Pulses greater than steps")
@@ -29,7 +27,6 @@ func Bjorklund(steps int, pulses int) []int {
     i := pattern.pos(1)
     pattern = append(pattern[i:], pattern[0:i]...)
 
-    fmt.Printf("%v\n", pattern)
     return pattern
 }
 

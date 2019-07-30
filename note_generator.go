@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 
@@ -15,19 +14,20 @@ type NoteGeneratorInterface interface {
 }
 
 type NoteGenerator struct {
+	Rhythms 		   map[uint8][]int
 	Writer             *mid.Writer
 	BPM                int
 	VelocityMultiplier float64
 }
 
 func (noteGenerator NoteGenerator) RespondToKey(p *mid.Position, channel, key, velocity uint8) {
-	rhythm := Rhythms[key]
+	rhythm := noteGenerator.Rhythms[key]
 	newVelocity := uint8(float64(velocity) * noteGenerator.VelocityMultiplier)
 	go noteGenerator.PlayRhythm(key, rhythm, newVelocity)
 }
 
 func (noteGenerator NoteGenerator) RespondToKeyPlusSevenRando(p *mid.Position, channel, key, velocity uint8) {
-	rhythm := Rhythms[key]
+	rhythm := noteGenerator.Rhythms[key]
 
 	randSource := rand.NewSource(time.Now().UnixNano())
 	rand.New(randSource)

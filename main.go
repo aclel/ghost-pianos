@@ -3,11 +3,27 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
+  	"path/filepath"
 
+	"github.com/aclel/ghost-pianos/bjorklund"
 	"github.com/gomidi/connect"
 	"github.com/gomidi/mid"
+	"gopkg.in/yaml.v2"
 	driver "github.com/gomidi/rtmididrv"
 )
+
+type Config struct {
+	Rhythms map[uint8][]int `yaml:"rhythms"`
+}
+
+func (c* Config) buildRhythms() map[uint8][]int {
+	rhythms := make(map[uint8][]int)
+	for key, value := range c.Rhythms {
+		rhythms[key] = bjorklund.Bjorklund(value[0], value[1])
+	}
+	return rhythms
+}
 
 func main() {
 	drv, err := driver.New()
@@ -69,11 +85,30 @@ func main() {
 		panic(err.Error())
 	}
 
+	filename, _ := filepath.Abs("./rhythms.yaml")
+	yamlFile, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	var config Config
+	err = yaml.Unmarshal(yamlFile, &config)
+	if err != nil {
+		panic(err)
+	}
+
+	rhythms := config.buildRhythms()
+
 	writer := mid.WriteTo(out)
-	noteGenerator := NoteGenerator{Writer: writer, BPM: *bpmPtr, VelocityMultiplier: *velocityMultiplierPtr}
+	noteGenerator := NoteGenerator{
+		Rhythms: rhythms,
+		Writer: writer,
+		BPM: *bpmPtr,
+		VelocityMultiplier: *velocityMultiplierPtr,
+	}
 
 	reader := mid.NewReader()
-	reader.Msg.Channel.NoteOn = noteGenerator.RespondToKey
+	reader.Msg.Channel.NoteOn = noteGenerator.RespondToKeyPlusSevenRando
 
 	// Indefinitely listen and respond MIDI inputs using the note generator
 	go reader.ReadFrom(in)
