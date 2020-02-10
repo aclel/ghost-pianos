@@ -7,10 +7,9 @@ import (
   	"path/filepath"
 
 	"github.com/aclel/ghost-pianos/bjorklund"
-	"github.com/gomidi/connect"
-	"github.com/gomidi/mid"
+	"gitlab.com/gomidi/midi/mid"
 	"gopkg.in/yaml.v2"
-	driver "github.com/gomidi/rtmididrv"
+	driver "gitlab.com/gomidi/rtmididrv"
 )
 
 type Config struct {
@@ -100,7 +99,7 @@ func main() {
 
 	rhythms := config.buildRhythms()
 
-	writer := mid.WriteTo(out)
+	writer := mid.ConnectOut(out)
 	noteGenerator := NoteGenerator{
 		Rhythms: rhythms,
 		Writer: writer,
@@ -111,20 +110,16 @@ func main() {
 	reader := mid.NewReader()
 	reader.Msg.Channel.NoteOn = noteGenerator.RespondToKeyPlusSevenRando
 
-	// Indefinitely listen and respond MIDI inputs using the note generator
-	go reader.ReadFrom(in)
-	{
-		for {
+	// listen for MIDI
+	mid.ConnectIn(in, reader)
 
-		}
-	}
 }
 
-func printPort(port connect.Port) {
+func printPort(port mid.Port) {
 	fmt.Printf("[%v] %s\n", port.Number(), port.String())
 }
 
-func printInPorts(ports []connect.In) {
+func printInPorts(ports []mid.In) {
 	fmt.Printf("MIDI IN Ports\n")
 	for _, port := range ports {
 		printPort(port)
@@ -132,7 +127,7 @@ func printInPorts(ports []connect.In) {
 	fmt.Printf("\n\n")
 }
 
-func printOutPorts(ports []connect.Out) {
+func printOutPorts(ports []mid.Out) {
 	fmt.Printf("MIDI OUT Ports\n")
 	for _, port := range ports {
 		printPort(port)

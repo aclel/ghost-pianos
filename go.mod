@@ -1,9 +1,9 @@
 module github.com/aclel/ghost-pianos
 
+go 1.13
+
 require (
-	github.com/gomidi/connect v0.11.1
-	github.com/gomidi/mid v0.17.0
-	github.com/gomidi/midi v1.6.0
-	github.com/gomidi/rtmididrv v0.0.7
-	gopkg.in/yaml.v2 v2.2.2
+	gitlab.com/gomidi/midi v1.14.1
+	gitlab.com/gomidi/rtmididrv v0.4.2
+	gopkg.in/yaml.v2 v2.2.8
 )

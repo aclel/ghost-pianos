@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/gomidi/mid"
+	"gitlab.com/gomidi/midi/mid"
 )
 
 type NoteGeneratorInterface interface {
